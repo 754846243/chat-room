@@ -49,7 +49,6 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
                 return ;
             }
         }
-
         filterChain.doFilter(request, response);
     }
 

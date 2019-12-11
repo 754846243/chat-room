@@ -1,6 +1,5 @@
 package iscyf.chatroom.controller;
 
-import com.sun.deploy.net.HttpResponse;
 import iscyf.chatroom.component.VerificationCode;
 import iscyf.chatroom.utils.VerificationCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
