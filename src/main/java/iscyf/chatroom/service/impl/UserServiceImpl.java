@@ -1,10 +1,14 @@
 package iscyf.chatroom.service.impl;
 
+import iscyf.chatroom.entity.Impression;
 import iscyf.chatroom.entity.User;
 import iscyf.chatroom.repository.UserRepository;
 import iscyf.chatroom.service.UserService;
+import iscyf.chatroom.vo.UserInformationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author 陈雨菲

@@ -1,10 +1,13 @@
 package iscyf.chatroom.controller;
 
 import iscyf.chatroom.configure.QiniuConfigure;
+import iscyf.chatroom.entity.Impression;
 import iscyf.chatroom.repository.UserRepository;
 import iscyf.chatroom.entity.User;
+import iscyf.chatroom.service.ImpressionService;
 import iscyf.chatroom.service.UserService;
 import iscyf.chatroom.utils.QiniuUpload;
+import iscyf.chatroom.vo.UserInformationVO;
 import iscyf.chatroom.vo.UserVO;
 import iscyf.chatroom.utils.ResultVOUtil;
 import iscyf.chatroom.vo.ResultVO;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author 陈雨菲
@@ -29,6 +33,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    public ImpressionService impressionService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -58,7 +65,7 @@ public class UserController {
     }
 
     /**
-     * 更新用户信息
+     * 更新用户本人个人信息
      * @param gender 用户性别
      * @param age 用户年龄
      * @param file 用户头像文件
@@ -97,7 +104,7 @@ public class UserController {
     }
 
     /**
-     * 获得用户信息
+     * 获得用户本人个人信息
      * @param request
      * @return
      */
@@ -106,5 +113,18 @@ public class UserController {
         User user = userService.findUserOne(request.getRemoteUser());
         if (user.getAvatar() == null) user.setAvatar(QiniuConfigure.path + "avatar0");
         return ResultVOUtil.success(user);
+    }
+
+    /**
+     * 根据用户id获得用户信息
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public ResultVO getUserInfoById (@PathVariable Integer id) {
+        User user = userService.findUserOnById(id);
+        List<Impression> impressions = impressionService.findAllByUid(id);
+        UserInformationVO userInformation = new UserInformationVO(user, impressions);
+        return ResultVOUtil.success(userInformation);
     }
 }
