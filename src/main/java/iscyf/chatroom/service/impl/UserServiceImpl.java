@@ -23,6 +23,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserOnById(Integer id) {
+        System.out.println(id);
+        return userRepository.findUserById(id);
+    }
+
+    @Override
     public User save (User user) {
         System.out.println(user.toString());
         return userRepository.save(user);
