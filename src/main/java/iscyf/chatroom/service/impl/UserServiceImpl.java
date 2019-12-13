@@ -1,5 +1,6 @@
 package iscyf.chatroom.service.impl;
 
+import io.swagger.models.auth.In;
 import iscyf.chatroom.entity.Impression;
 import iscyf.chatroom.entity.User;
 import iscyf.chatroom.repository.UserRepository;
@@ -8,6 +9,7 @@ import iscyf.chatroom.vo.UserInformationVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findUserOnById(Integer id) {
+    public User findUserOneById(Integer id) {
         System.out.println(id);
         return userRepository.findUserById(id);
     }
@@ -39,7 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer getIdByUsername(String username) {
-        return findUserOne(username).getId();
+    public User findUserByRequest (HttpServletRequest request) {
+        Integer id = Integer.valueOf(request.getRemoteUser());
+        return userRepository.findUserById(id);
     }
 }

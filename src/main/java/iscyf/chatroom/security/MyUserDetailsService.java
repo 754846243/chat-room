@@ -23,7 +23,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        iscyf.chatroom.entity.User user = userService.findUserOnById(Integer.valueOf(userId));
+        iscyf.chatroom.entity.User user = userService.findUserOneById(Integer.valueOf(userId));
         System.out.println(user.toString());
         if (user == null) {
             System.out.println("用户不存在");

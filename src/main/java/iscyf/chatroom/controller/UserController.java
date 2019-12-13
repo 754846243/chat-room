@@ -65,26 +65,20 @@ public class UserController {
     }
 
     /**
-     * 更新用户本人个人信息
-     * @param gender 用户性别
-     * @param age 用户年龄
-     * @param file 用户头像文件
+     * 用户上传头像
+     * @param file
      * @return
      */
-    @PostMapping("/update")
-    public ResultVO update (@RequestParam String gender,
-                            @RequestParam Integer age,
-                            @RequestParam MultipartFile file,
-                            HttpServletRequest request) {
-        String username = request.getRemoteUser();
-        Integer uid = userService.getIdByUsername(username);
+    @PostMapping("/avatar")
+    public ResultVO uploadAvatar (@RequestParam MultipartFile file,
+                                  HttpServletRequest request) {
+        String uid = request.getRemoteUser();
 
         String originalFilename = file.getOriginalFilename();
         String suffixName = originalFilename.substring(originalFilename.lastIndexOf("."));
         if (StringUtils.equalsIgnoreCase(suffixName, "jpg") && StringUtils.equalsIgnoreCase(suffixName, "png")) {
             return ResultVOUtil.error("500", "图片格式不对");
         }
-
 
         String fileName = "avatar" + uid + suffixName;
         String avatarUrl;
@@ -93,13 +87,26 @@ public class UserController {
         } catch (Exception e) {
             return ResultVOUtil.error("500", "图片上传失败");
         }
+        return ResultVOUtil.success(avatarUrl);
+    }
 
-        User user = userService.findUserOne(username);
+    /**
+     * 更新用户本人个人信息
+     * @param gender 用户性别
+     * @param age 用户年龄
+     * @param avatar 用户头像地址
+     * @return
+     */
+    @PostMapping("/update")
+    public ResultVO update (@RequestParam String gender,
+                            @RequestParam Integer age,
+                            @RequestParam String avatar,
+                            HttpServletRequest request) {
+        User user = userService.findUserByRequest(request);
         user.setGender(gender);
         user.setAge(age);
-        user.setAvatar(avatarUrl);
+        user.setAvatar(avatar);
         userService.save(user);
-
         return ResultVOUtil.success(user);
     }
 
@@ -110,7 +117,7 @@ public class UserController {
      */
     @GetMapping
     public ResultVO getUserInfo (HttpServletRequest request) {
-        User user = userService.findUserOne(request.getRemoteUser());
+        User user = userService.findUserByRequest(request);
         if (user.getAvatar() == null) user.setAvatar(QiniuConfigure.path + "avatar0");
         return ResultVOUtil.success(user);
     }
@@ -122,7 +129,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public ResultVO getUserInfoById (@PathVariable Integer id) {
-        User user = userService.findUserOnById(id);
+        User user = userService.findUserOneById(id);
         List<Impression> impressions = impressionService.findAllByUid(id);
         UserInformationVO userInformation = new UserInformationVO(user, impressions);
         return ResultVOUtil.success(userInformation);

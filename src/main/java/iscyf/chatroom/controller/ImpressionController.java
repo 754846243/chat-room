@@ -30,23 +30,22 @@ public class ImpressionController {
      * 获得好友印象列表
      */
     @GetMapping
-    public ResultVO getFriendeImpressions (HttpServletRequest request) {
-        Integer uid = userService.getIdByUsername(request.getRemoteUser());
+    public ResultVO getFriendImpressions (HttpServletRequest request) {
+        Integer uid = Integer.valueOf(request.getRemoteUser());
         List<Impression> impressions = impressionService.findAllByUid(uid);
         return ResultVOUtil.success(impressions);
     }
 
     /**
      * 添加一条好友印象
-     * @param username 用户姓名
+     * @param uid 用户id
      * @param impression 新好友印象
      * @return
      */
     @PostMapping
-    public ResultVO postOneFriendImpression (@RequestParam String username,
+    public ResultVO postOneFriendImpression (@RequestParam Integer uid,
                                              @RequestParam String impression) {
         System.out.println("添加一条印象");
-        Integer uid = userService.getIdByUsername(username);
         Impression friendImpression = new Impression(uid, impression);
         System.out.println(friendImpression.toString());
         friendImpression = impressionService.save(friendImpression);
@@ -65,12 +64,12 @@ public class ImpressionController {
         if (impression == null ) {
             return ResultVOUtil.error("500", "该印象不存在");
         }
-        if (impression.getUid() != userService.getIdByUsername(request.getRemoteUser())) {
+        if (impression.getUid() != Integer.valueOf(request.getRemoteUser())) {
             return ResultVOUtil.error("500", "抱歉您只能删除自己的好友印象");
         }
 
         if (impressionService.delete(id)) {
-            return getFriendeImpressions(request);
+            return getFriendImpressions(request);
         } else {
             return ResultVOUtil.error("500", "删除失败");
         }
