@@ -375,6 +375,8 @@ pre code{
 
                             <ul class="nav list-group">
                                 <li>
+                                        <a href="#9c2a9b8bf5af49a580dca613229d4f10">上传头像</a>
+                                    </li><li>
                                         <a href="#910325e96b11412b8dc2f7b86c35f840">根据用户id获得用户信息</a>
                                     </li><li>
                                         <a href="#c6c4a85349144bc2a6e95ad1146cfc84">退出</a>
@@ -414,6 +416,54 @@ pre code{
                 <h1>iscyf</h1>
                     
                     <div class="api-one">
+                            <h3 id="9c2a9b8bf5af49a580dca613229d4f10">上传头像</h3>
+                            <p>
+                                <a target="_blank"
+                                   href="https://apizza.net/pro/#/project/871e65e616d2fcc6a9772cbc82b0a905/browse?api=9c2a9b8bf5af49a580dca613229d4f10"
+                                   class="label label-warning">在线测试</a>
+                                <a target="_blank"
+                                   href="https://apizza.net/pro/#/project/871e65e616d2fcc6a9772cbc82b0a905/browse?api=9c2a9b8bf5af49a580dca613229d4f10"
+                                   class="label label-warning">在线浏览</a>
+                            </p>
+                            <p>请求方式：POST</p>
+                            <p>
+                                请求地址：localhost:8082/user/avatar                            </p>
+
+                            
+                            
+
+                                                                <table class="table table-hover">
+                                            <colgroup>
+                                                <col class="col-xs-2">
+                                                <col class="col-xs-1">
+                                                <col class="col-xs-1">
+                                                <col class="col-xs-7">
+                                                <col class="col-xs-2">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th><span class="label label-success">Body参数名</span></th>
+                                                <th>类型</th>
+                                                <th>必需</th>
+                                                <th>描述</th>
+                                                <th>示例 e.g.</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                    <td>file</td>
+                                                    <td>string</td>
+                                                    <td>
+                                                        是
+                                                                                                                </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>                                            </tbody>
+                                        </table>
+                            
+                            
+                            
+                        </div><div class="api-one">
                             <h3 id="910325e96b11412b8dc2f7b86c35f840">根据用户id获得用户信息</h3>
                             <p>
                                 <a target="_blank"
@@ -658,12 +708,12 @@ pre code{
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                    <td>username</td>
+                                                    <td>uid</td>
                                                     <td>string</td>
                                                     <td>
                                                         是
                                                                                                                 </td>
-                                                    <td>添加印象的对象的用户名</td>
+                                                    <td>添加印象的对象的用户id</td>
                                                     <td>iscyf</td>
                                                 </tr><tr>
                                                     <td>impression</td>
@@ -743,13 +793,13 @@ pre code{
                                                     <td>年龄</td>
                                                     <td>21</td>
                                                 </tr><tr>
-                                                    <td>file</td>
+                                                    <td>avatar</td>
                                                     <td>string</td>
                                                     <td>
                                                         是
                                                                                                                 </td>
-                                                    <td>头像文件</td>
-                                                    <td></td>
+                                                    <td>头像文件url地址</td>
+                                                    <td>头像的url</td>
                                                 </tr>                                            </tbody>
                                         </table>
                             
