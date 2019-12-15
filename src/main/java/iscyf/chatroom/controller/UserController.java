@@ -2,6 +2,7 @@ package iscyf.chatroom.controller;
 
 import iscyf.chatroom.configure.QiniuConfigure;
 import iscyf.chatroom.entity.Impression;
+import iscyf.chatroom.repository.UserRepository;
 import iscyf.chatroom.entity.User;
 import iscyf.chatroom.service.ImpressionService;
 import iscyf.chatroom.service.UserService;
@@ -53,7 +54,7 @@ public class UserController {
         String username = userVO.getUsername();
         String password = userVO.getPassword();
 
-        User user = userService.findUserOneById(username);
+        User user = userService.findUserOne(username);
         if (user != null) {
             return ResultVOUtil.error("500", "该用户名已经被使用");
         }
