@@ -1,6 +1,7 @@
 package iscyf.chatroom.security;
 
 import iscyf.chatroom.repository.UserRepository;
+import iscyf.chatroom.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -18,16 +19,17 @@ import org.springframework.stereotype.Component;
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        iscyf.chatroom.entity.User user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        iscyf.chatroom.entity.User user = userService.findUserOneById(Integer.valueOf(userId));
+        System.out.println(user.toString());
         if (user == null) {
             System.out.println("用户不存在");
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(userId);
         }
         String password = user.getPassword();
-        return new User(username, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        return new User(userId, password, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }

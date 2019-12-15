@@ -14,5 +14,7 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     public User findByUsername (String username);
 
+    public User findUserById (Integer id);
+
     public User save (User user);
 }
