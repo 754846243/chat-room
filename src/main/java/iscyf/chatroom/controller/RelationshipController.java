@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
+
 /**
  * @Description 对好友关系的控制，包括查找所有好友，
  * @date 2019-12-11 17:50
@@ -29,16 +31,18 @@ public class RelationshipController {
 
     /**
      * @description
-     * @param  username 要添加的好友的用户名
+     * @param  uid 要添加的好友的用户名
      * @param  request 用于获取当前用户信息
      * @Return iscyf.chatroom.entity.Relationship
      */
     @PostMapping(value = "/")
-    public ResultVO addOneRelationship(@RequestParam String username,
+    public ResultVO addOneRelationship(@RequestParam Integer uid,
                                        @RequestParam(required = false) String groupname,
                                        HttpServletRequest request) {
-        User user1 = userService.findUserOne(request.getRemoteUser());
-        User user2 = userService.findUserOne(username);
+        User user1 = userService.findUserOneById(Integer.parseInt(request.getRemoteUser()));
+        User user2 = userService.findUserOneById(uid);
+        LOGGER.info(user1);
+        LOGGER.info(user2);
         if (user1.equals(user2)) {
             return ResultVOUtil.error("400", "不能添加自己为好友");
         }
@@ -83,13 +87,13 @@ public class RelationshipController {
 
     /**
      * @description
-     * @param  username 关系id
+     * @param  uid 关系id
      * @Return iscyf.chatroom.vo.ResultVO
      */
     @DeleteMapping("/{username}")
-    public ResultVO deleteOneRelationship(@PathVariable String username, HttpServletRequest request) {
-        User user1 = userService.findUserOne(request.getRemoteUser());
-        User user2 = userService.findUserOne(username);
+    public ResultVO deleteOneRelationship(@PathVariable Integer uid, HttpServletRequest request) {
+        User user1 = userService.findUserOneById(Integer.parseInt(request.getRemoteUser()));
+        User user2 = userService.findUserOneById(uid);
         Relationship relationship = relationshipService.findRelationshipByUsers(user1, user2);
         relationshipService.deleteOneRelationship(relationship.getUser1(), relationship.getUser2());
         return ResultVOUtil.success("删除成功", relationship);
@@ -103,8 +107,7 @@ public class RelationshipController {
      */
     @GetMapping(value = "/groups")
     public ResultVO findGroupNames(HttpServletRequest request) {
-        User user = userService.findUserOne(request.getRemoteUser());
-        Map<String, Integer> groupInfo = relationshipService.findGroupNames(user.getId());
+        Map<String, Integer> groupInfo = relationshipService.findGroupNames(Integer.parseInt(request.getRemoteUser()));
         return ResultVOUtil.success(groupInfo);
     }
 
@@ -116,7 +119,7 @@ public class RelationshipController {
     @GetMapping(value = "/groups/{group}")
     public ResultVO findAllRelationships(@PathVariable("group") String group,
                                          HttpServletRequest request) {
-        User user = userService.findUserOne(request.getRemoteUser());
+        User user = userService.findUserOneById(Integer.parseInt(request.getRemoteUser()));
         List<Relationship> relationships;
         if (group == null) {
             return ResultVOUtil.error("400","请传入分组名称");
@@ -140,7 +143,7 @@ public class RelationshipController {
     @GetMapping(value = "/{ifPassed}")
     public ResultVO findAllRelationships(@PathVariable Integer ifPassed,
                                          HttpServletRequest request) {
-        User user = userService.findUserOne(request.getRemoteUser());
+        User user = userService.findUserOneById(Integer.parseInt(request.getRemoteUser()));
         List<Relationship> relationships;
         if (ifPassed != 0 && ifPassed != 1 && ifPassed != 2) {
             return ResultVOUtil.error("400","请传入正确的好友关系状态参数");

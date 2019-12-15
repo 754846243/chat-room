@@ -61,11 +61,13 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
 
         try {
             codeInRequest  = ServletRequestUtils.getStringParameter(request.getRequest(), "code");
+            System.out.println(codeInRequest);
+            System.out.println(codeInSession.getCode());
         } catch (ServletRequestBindingException e) {
             throw new VerificationCodeException("获取验证码的值失败");
         }
 
-        if (StringUtils.isBlank(codeInRequest)) {
+        if (StringUtils.isEmpty(codeInRequest)) {
             throw new VerificationCodeException("验证码的值不能为空");
         }
 
@@ -78,7 +80,7 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
             throw new VerificationCodeException("验证码已过期");
         }
 
-        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
+        if (!StringUtils.equals(codeInSession.getCode().toLowerCase(), codeInRequest.toLowerCase())) {
             throw new VerificationCodeException("验证码不匹配");
         }
 

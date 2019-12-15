@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import static javax.persistence.GenerationType.TABLE;
+
 /**
  * @author 陈雨菲
  * @description 用户实体类
@@ -19,7 +21,7 @@ public class User {
 
     /* 用户id，递增自动生成 */
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = TABLE, generator = "hibernate_sequence")
     private Integer id;
 
     /* 用户姓名 */
