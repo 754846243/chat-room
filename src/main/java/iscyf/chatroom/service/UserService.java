@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface UserService {
 
-    public User findUserOneById(String username);
+    public User findUserOne (String username);
 
     public User findUserOneById (Integer id);
 

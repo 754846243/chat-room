@@ -61,8 +61,6 @@ public class VerificationCodeFilter extends OncePerRequestFilter {
 
         try {
             codeInRequest  = ServletRequestUtils.getStringParameter(request.getRequest(), "code");
-            System.out.println(codeInRequest);
-            System.out.println(codeInSession.getCode());
         } catch (ServletRequestBindingException e) {
             throw new VerificationCodeException("获取验证码的值失败");
         }
