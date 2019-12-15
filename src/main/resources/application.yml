@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/chatroom?useSSL=false&serverTimezone=GMT
     username: root
-    password: xcdrf305
+    password: cyf123
   jpa:
     show-sql: true
     hibernate:

@@ -2,9 +2,11 @@ package iscyf.chatroom.controller;
 
 import iscyf.chatroom.configure.QiniuConfigure;
 import iscyf.chatroom.entity.Impression;
+import iscyf.chatroom.entity.Relationship;
 import iscyf.chatroom.repository.UserRepository;
 import iscyf.chatroom.entity.User;
 import iscyf.chatroom.service.ImpressionService;
+import iscyf.chatroom.service.RelationshipService;
 import iscyf.chatroom.service.UserService;
 import iscyf.chatroom.utils.QiniuUpload;
 import iscyf.chatroom.vo.UserInformationVO;
@@ -13,6 +15,7 @@ import iscyf.chatroom.utils.ResultVOUtil;
 import iscyf.chatroom.vo.ResultVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,9 @@ public class UserController {
 
     @Autowired
     public ImpressionService impressionService;
+
+    @Autowired
+    public RelationshipService relationshipService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -128,10 +134,22 @@ public class UserController {
      * @return
      */
     @GetMapping("/{id}")
-    public ResultVO getUserInfoById (@PathVariable Integer id) {
-        User user = userService.findUserOneById(id);
+    public ResultVO getUserInfoById (@PathVariable Integer id,
+                                     HttpServletRequest request) {
         List<Impression> impressions = impressionService.findAllByUid(id);
-        UserInformationVO userInformation = new UserInformationVO(user, impressions);
+        User user1 = userService.findUserOneById(Integer.parseInt(request.getRemoteUser()));
+        User user2 = userService.findUserOneById(id);
+        if (user2 == null) {
+            return ResultVOUtil.error("500", "没有该用户");
+        }
+        UserInformationVO userInformation;
+        Relationship relationship = relationshipService.findRelationshipByUsers(user1, user2);
+
+        if (relationship != null && relationship.getIfPassed() == 1) {
+            userInformation = new UserInformationVO(user2, impressions, true);
+        } else {
+            userInformation = new UserInformationVO(user2, impressions, false);
+        }
         return ResultVOUtil.success(userInformation);
     }
 }

@@ -24,14 +24,17 @@ public class UserInformationVO {
 
     private List<String> impressions;
 
-    public UserInformationVO(User user, List<Impression> impressions) {
+    private Boolean isFriend;
+
+    public UserInformationVO(User user, List<Impression> impressions, Boolean isFriend) {
         this.username = user.getUsername();
         this.userId = user.getId();
-        this.age = user.getId();
+        this.age = user.getAge();
         this.gender = user.getGender();
         this.impressions = new ArrayList<>();
         for (Impression impression: impressions) {
             this.impressions.add(impression.getImpression());
         }
+        this.isFriend = isFriend;
     }
 }
